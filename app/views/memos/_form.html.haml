@@ -1,25 +1,29 @@
-= form_with(model: memo) do |form|
-  - if memo.errors.any?
-    %div{:style => "color:red;"}
-      %h2
-        = pluralize(memo.errors.count, "error")
-        prohibited this memo from being saved:
-      %ul
-        - memo.errors.full_messages.each do |message|
-          %li= message
-  %div
-    = form.label :title, "タイトル"
-    %br/
-    = form.text_field :title, required: true
-  %div
-    = form.label :content, "内容"
-    %br/
-    = form.text_area :content
-  %div
-    = form.label :due_on, "期日"
-    %br/
-    = form.date_field :due_on
-  %div
-    = form.check_box :completed
-    = form.label :completed, "完了済みにする"
-  %div= form.submit
+.card.form
+  = form_with model: memo do |f|
+    - if memo.errors.any?
+      .flash.alert
+        %strong 入力エラー（#{memo.errors.count}件）
+        %ul
+          - memo.errors.full_messages.each do |msg|
+            %li= msg
+
+    .field
+      = f.label :title, "タイトル", class: "label"
+      = f.text_field :title, required: true, class: "input"
+
+    .field
+      = f.label :content, "内容", class: "label"
+      = f.text_area :content, rows: 6, class: "textarea"
+
+    .field.inline
+      = f.label :due_on, "期日", class: "label"
+      = f.date_field :due_on, class: "input"
+
+    .field.inline
+      .checkbox
+        = f.check_box :completed
+        = f.label :completed, "完了済みにする"
+
+    .toolbar
+      = f.submit (memo.persisted? ? "更新" : "保存"), class: "btn btn-primary"
+      = link_to "キャンセル", memos_path, class: "btn"

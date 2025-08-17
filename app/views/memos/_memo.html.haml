@@ -1,7 +1,16 @@
-%div{:id => "#{dom_id memo}"}
-  %p
-    %strong Title:
-    = memo.title
-  %p
-    %strong Content:
-    = memo.content
+- memo ||= @memo
+%tr{ id: dom_id(memo) }
+  %td.checkbox
+    = form_with url: toggle_memo_path(memo), method: :patch, data: { turbo_stream: true } do
+      %label{ style: "display:flex;align-items:center;gap:10px;cursor:pointer;" }
+        = check_box_tag :completed, "1", memo.completed,
+          data: { controller: "auto-submit", action: "auto-submit#submit" }
+        %span= memo.completed ? "完了" : "未完了"
+        %span.sr-only= memo.completed ? "未完了にする" : "完了にする"
+  %td= link_to memo.title, edit_memo_path(memo)
+  - overdue_class = (memo.respond_to?(:overdue?) && memo.overdue?) ? "due overdue" : "due"
+  %td{ class: overdue_class }= memo.due_on&.strftime("%Y-%m-%d") || "-"
+  %td.actions
+    = link_to "削除", memo, class: "btn btn-small btn-danger",
+      data: { turbo_method: :delete, turbo_confirm: "削除しますか？" }
+

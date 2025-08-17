@@ -1,8 +1,7 @@
-- content_for :title, "Editing memo"
-%h1 Editing memo
+.header
+  %h1.title メモを編集
+  .toolbar
+    = link_to "詳細へ", memo_path(@memo), class: "btn"
+    = link_to "一覧へ戻る", memos_path, class: "btn"
+
 = render "form", memo: @memo
-%br/
-%div
-  = link_to "Show this memo", @memo
-  |
-  \#{link_to "Back to memos", memos_path}

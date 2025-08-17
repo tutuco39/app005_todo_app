@@ -1,32 +1,32 @@
-%h1= action_name == "completed" ? "完了済みメモ" : "ToDoメモ（未完了）"
+.header
+  %h1.title
+    = action_name == "completed" ? "完了済ToDo" : "ToDo（未完了）"
+    - if defined?(@incomplete_count) && action_name != "completed"
+      %span.pill 未完了 #{@incomplete_count}
+    - if defined?(@completed_count) && action_name == "completed"
+      %span.pill 完了 #{@completed_count}
 
-%nav{ style: "margin:8px 0 16px;" }
-  - if action_name == "completed"
-    = link_to "未完了へ", memos_path
-    %span= " | "
-    = link_to "新規作成", new_memo_path
-  - else
-    = link_to "完了済みを見る", completed_memos_path
-    %span= " | "
-    = link_to "新規作成", new_memo_path
+  .toolbar
+    - if action_name == "completed"
+      = link_to "未完了", memos_path, class: "btn btn-ghost"
+      = link_to "新規作成", new_memo_path, class: "btn btn-primary"
+    - else
+      = link_to "完了済", completed_memos_path, class: "btn"
+      = link_to "新規作成", new_memo_path, class: "btn btn-primary"
 
-%table
-  %thead
-    %tr
-      %th 完了
-      %th タイトル
-      %th 期日
-      %th
-  %tbody
-    - @memos.each do |memo|
+.card
+  %table.table
+    %thead
       %tr
-        %td
-          = button_to toggle_memo_path(memo), method: :patch, form: { data: { turbo_confirm: nil } } do
-            %input{ type: "checkbox", checked: memo.completed, onclick: "return false;" }
-        %td= link_to memo.title, edit_memo_path(memo)
-        - overdue_style = memo.respond_to?(:overdue?) && memo.overdue? ? "color:red;font-weight:bold;" : nil
-        %td{ style: overdue_style }= memo.due_on&.strftime("%Y-%m-%d") || "-"
-        %td= link_to "削除", memo, data: { turbo_method: :delete, turbo_confirm: "削除しますか？" }
+        %th 完了
+        %th タイトル
+        %th 期日
+        %th
+    %tbody#memos
+      = render @memos
 
 - if @memos.empty?
-  %p 表示するメモはありません。
+  %p.empty 表示するメモはありません。
+
+
+
