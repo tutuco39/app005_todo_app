@@ -1,0 +1,25 @@
+= form_with(model: memo) do |form|
+  - if memo.errors.any?
+    %div{:style => "color:red;"}
+      %h2
+        = pluralize(memo.errors.count, "error")
+        prohibited this memo from being saved:
+      %ul
+        - memo.errors.full_messages.each do |message|
+          %li= message
+  %div
+    = form.label :title, "タイトル"
+    %br/
+    = form.text_field :title, required: true
+  %div
+    = form.label :content, "内容"
+    %br/
+    = form.text_area :content
+  %div
+    = form.label :due_on, "期日"
+    %br/
+    = form.date_field :due_on
+  %div
+    = form.check_box :completed
+    = form.label :completed, "完了済みにする"
+  %div= form.submit
