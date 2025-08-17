@@ -19,7 +19,7 @@ class MemosController < ApplicationController
   def create
     @memo = Memo.new(memo_params)
     if @memo.save
-      redirect_to memos_url, notice: "タスクを作成しました。"
+      redirect_to memos_url, notice: "メモを作成しました。"
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class MemosController < ApplicationController
 
   def update
     if @memo.update(memo_params)
-      redirect_to request.referer || memos_url, notice: "タスクを更新しました。"
+      redirect_to request.referer || memos_url, notice: "メモを更新しました。"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -35,7 +35,7 @@ class MemosController < ApplicationController
 
   def destroy
     @memo.destroy!
-    redirect_to request.referer || memos_url, notice: "タスクを削除しました。"
+    redirect_to memos_url, notice: "メモを削除しました。"
   end
 
   # ② チェックで完了/未完を切替え（Turboで即反映）
