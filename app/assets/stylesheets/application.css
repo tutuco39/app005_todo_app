@@ -49,6 +49,21 @@ a {
   padding:0 16px;
 }
 
+.checkbox input[type="checkbox"] {
+  width:18px;
+  height:18px;
+  accent-color: var(--accent);
+}
+
+.sr-only {
+  position:absolute;
+  width:1px;
+  height:1px;
+  margin:-1px;
+  clip:rect(0,0,0,0);
+  overflow:hidden;
+}
+
 
 /* --- Reset --- */
 

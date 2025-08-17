@@ -40,11 +40,16 @@ class MemosController < ApplicationController
   end
 
   # ② チェックで完了/未完を切替え（Turboで即反映）
-  def toggle
-    @memo.update!(completed: !@memo.completed)
-    # 完了→完了一覧、未完→未完一覧へ
-    redirect_to(@memo.completed ? completed_memos_path : memos_path, notice: "状態を更新しました。")
+def toggle
+  @memo.update!(completed: !@memo.completed)
+  respond_to do |format|
+    format.turbo_stream   # ← .turbo_stream テンプレートを探す
+    format.html {
+      redirect_to(@memo.completed ? completed_memos_path : memos_path, notice: "状態を更新しました。") 
+    }
   end
+end
+
 
   private
     def set_memo
