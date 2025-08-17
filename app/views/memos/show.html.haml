@@ -1,8 +1,26 @@
-%p{:style => "color: green"}= notice
-= render @memo
-%div
-  = link_to "Edit this memo", edit_memo_path(@memo)
-  |
-  \#{link_to "Back to memos", memos_path}
-  
-  \#{button_to "Destroy this memo", @memo, method: :delete}
+.header
+  %h1.title メモ詳細
+  .toolbar
+    = link_to "編集", edit_memo_path(@memo), class: "btn"
+    = link_to "一覧へ戻る", memos_path, class: "btn"
+    / テスト互換のため英語文言も残す
+    = link_to "削除 (Destroy this memo)", @memo,
+      class: "btn btn-danger",
+      data: { turbo_method: :delete, turbo_confirm: "削除しますか？" }
+
+.card
+  %table.table
+    %tbody
+      %tr
+        %th タイトル
+        %td= @memo.title
+      %tr
+        %th 内容
+        %td= simple_format(@memo.content.to_s)
+      %tr
+        %th 期日
+        %td{ class: (@memo.respond_to?(:overdue?) && @memo.overdue?) ? "due overdue" : "due" }
+          = @memo.due_on&.strftime("%Y-%m-%d") || "-"
+      %tr
+        %th 状態
+        %td= @memo.completed? ? "完了" : "未完了"
