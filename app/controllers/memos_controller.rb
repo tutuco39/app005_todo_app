@@ -1,70 +1,56 @@
 class MemosController < ApplicationController
-  before_action :set_memo, only: %i[ show edit update destroy ]
+  before_action :set_memo, only: %i[ show edit update destroy toggle ]
 
-  # GET /memos or /memos.json
+  # ① 未完了を期日順で
   def index
-    @memos = Memo.all
+    @memos = Memo.incomplete.order_due
   end
 
-  # GET /memos/1 or /memos/1.json
-  def show
+  # ③ 完了済みページ
+  def completed
+    @memos = Memo.completed.order_due
+    render :index
   end
 
-  # GET /memos/new
-  def new
-    @memo = Memo.new
-  end
+  def show; end
+  def new;  @memo = Memo.new; end
+  def edit; end
 
-  # GET /memos/1/edit
-  def edit
-  end
-
-  # POST /memos or /memos.json
   def create
     @memo = Memo.new(memo_params)
-
-    respond_to do |format|
-      if @memo.save
-        format.html { redirect_to @memo, notice: "Memo was successfully created." }
-        format.json { render :show, status: :created, location: @memo }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @memo.errors, status: :unprocessable_entity }
-      end
+    if @memo.save
+      redirect_to memos_url, notice: "タスクを作成しました。"
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /memos/1 or /memos/1.json
   def update
-    respond_to do |format|
-      if @memo.update(memo_params)
-        format.html { redirect_to @memo, notice: "Memo was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @memo }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @memo.errors, status: :unprocessable_entity }
-      end
+    if @memo.update(memo_params)
+      redirect_to request.referer || memos_url, notice: "タスクを更新しました。"
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /memos/1 or /memos/1.json
   def destroy
     @memo.destroy!
+    redirect_to request.referer || memos_url, notice: "タスクを削除しました。"
+  end
 
-    respond_to do |format|
-      format.html { redirect_to memos_path, notice: "Memo was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+  # ② チェックで完了/未完を切替え（Turboで即反映）
+  def toggle
+    @memo.update!(completed: !@memo.completed)
+    # 完了→完了一覧、未完→未完一覧へ
+    redirect_to(@memo.completed ? completed_memos_path : memos_path, notice: "状態を更新しました。")
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_memo
       @memo = Memo.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def memo_params
-      params.require(:memo).permit(:title, :content)
+      params.require(:memo).permit(:title, :due_on, :completed)
     end
 end

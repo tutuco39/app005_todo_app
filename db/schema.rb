@@ -10,11 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_16_155933) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_17_011423) do
   create_table "memos", force: :cascade do |t|
     t.string "title"
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "completed", default: false, null: false
+    t.date "due_on"
+    t.index ["completed"], name: "index_memos_on_completed"
+    t.index ["due_on"], name: "index_memos_on_due_on"
   end
 end
