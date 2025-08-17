@@ -27,11 +27,12 @@ class MemosController < ApplicationController
 
   def update
     if @memo.update(memo_params)
-      redirect_to request.referer || memos_url, notice: "メモを更新しました。"
+      redirect_to memos_url, notice: "メモを更新しました。"
     else
       render :edit, status: :unprocessable_entity
     end
   end
+
 
   def destroy
     @memo.destroy!
