@@ -1,0 +1,80 @@
+/* --- Forms --- */
+
+.card.form {
+  padding:16px 16px 20px;
+}
+
+.field {
+  margin-bottom:14px;
+}
+
+.field.inline {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.label {
+  display:block;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.input, .textarea {
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 12px;
+  background:#fff;
+}
+
+.input:focus, .textarea:focus {
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(34,197,94,.18);
+}
+
+/* まず全要素を border-box にして、横はみ出しを防止 */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 画像なども親幅に収める */
+img, svg, video, canvas, audio, iframe {
+  max-width: 100%;
+  display: block;
+}
+
+/* カードの角から内容がはみ出さないように */
+.card {
+  overflow: hidden;
+}
+
+/* フォーム要素は確実に親幅内に収める */
+.input, .textarea,
+input[type="text"], input[type="date"], textarea {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+  box-sizing: border-box; /* 念押し */
+}
+
+/* 横並びフィールドでのはみ出し対策（flexの縮小許可） */
+.field.inline {
+  gap: 12px;
+}
+
+.field.inline .input,
+.field.inline input[type="date"],
+.field.inline textarea {
+  flex: 1;
+  min-width: 0; /* これが無いと小さい画面で溢れることがある */
+}
+
+/* モバイルでは縦並びにしてさらに安全に */
+@media (max-width: 640px) {
+  .field.inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
