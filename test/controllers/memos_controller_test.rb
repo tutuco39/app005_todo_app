@@ -20,7 +20,7 @@ class MemosControllerTest < ActionDispatch::IntegrationTest
       post memos_url, params: { memo: { content: @memo.content, title: @memo.title } }
     end
 
-    assert_redirected_to memo_url(Memo.last)
+    assert_redirected_to memos_url
   end
 
   test "should show memo" do
@@ -35,7 +35,7 @@ class MemosControllerTest < ActionDispatch::IntegrationTest
 
   test "should update memo" do
     patch memo_url(@memo), params: { memo: { content: @memo.content, title: @memo.title } }
-    assert_redirected_to memo_url(@memo)
+    assert_redirected_to memos_url
   end
 
   test "should destroy memo" do

@@ -1,13 +1,12 @@
-<h1><%= action_name == "completed" ? "完了済みタスク" : "ToDo（未完了）" %></h1>
+<h1><%= action_name == "completed" ? "完了済みメモ" : "ToDoメモ（未完了）" %></h1>
 
-<nav style="margin: 8px 0 16px;">
+<nav style="margin:8px 0 16px;">
   <% if action_name == "completed" %>
     <%= link_to "未完了へ", memos_path %> |
-    <%= link_to "新規作成", new_memos_path %>
   <% else %>
     <%= link_to "完了済みを見る", completed_memos_path %> |
-    <%= link_to "新規作成", new_memo_path %>
   <% end %>
+  <%= link_to "新規作成", new_memo_path %>
 </nav>
 
 <table>
@@ -29,15 +28,12 @@
         </td>
         <td><%= link_to memo.title, edit_memo_path(memo) %></td>
         <td><%= memo.due_on&.strftime("%Y-%m-%d") || "-" %></td>
-        <td>
-          <%= link_to "削除", memo, data: { turbo_method: :delete, turbo_confirm: "削除しますか？" } %>
-        </td>
+        <td><%= link_to "削除", memo, data: { turbo_method: :delete, turbo_confirm: "削除しますか？" } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <% if @memos.empty? %>
-  <p>表示するタスクはありません。</p>
+  <p>表示するメモはありません。</p>
 <% end %>
-
