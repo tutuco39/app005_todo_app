@@ -15,8 +15,9 @@
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = javascript_importmap_tags
   %body
-    - if notice.present?
-      %p.notice= notice
-    - if alert.present?
-      %p.alert= alert
-    = yield
+    .container
+      - if notice.present?
+        %p.flash.notice= notice
+      - if alert.present?
+        %p.flash.alert= alert
+      = yield
