@@ -6,4 +6,3 @@ Rails.application.routes.draw do
     collection { get :completed } # 完了済み一覧
   end
 end
-
