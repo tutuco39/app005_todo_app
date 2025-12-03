@@ -109,7 +109,7 @@ GEM
       html2haml
     erubi (1.13.1)
     erubis (2.7.0)
-    faker (3.5.2)
+    faker (3.5.3)
       i18n (>= 1.8.11, < 2)
     ferrum (0.17.1)
       addressable (~> 2.5)
